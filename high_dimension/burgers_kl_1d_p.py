@@ -62,7 +62,7 @@ def forcing_term(x, t):
 
 xi = np.random.randn(5, 2)
 coefficients = ForcedBurgersEqn(
-    nu=1e-6, rofx=lambda x, t: forcing_term(x, t, xi=xi))
+    nu=1e-6, rofx=lambda x, t: forcing_term(x, t))
 
 
 def emptyBC(x, flag):
