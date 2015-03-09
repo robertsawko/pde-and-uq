@@ -1,0 +1,9 @@
+*.swp
+*.log
+*.pyc
+*.xmf
+*.h5
+uncertainty/doc/build
+*.pickle
+graphs/*.pdf
+*.blg
