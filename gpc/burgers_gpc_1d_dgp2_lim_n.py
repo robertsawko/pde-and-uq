@@ -29,7 +29,7 @@ femSpaces = dict(
 elementQuadrature = SimplexGaussQuadrature(nd, 4)
 elementBoundaryQuadrature = SimplexGaussQuadrature(nd-1, 4)
 
-nn = 201
+nn = 401
 nLevels = 1
 
 subgridError = None

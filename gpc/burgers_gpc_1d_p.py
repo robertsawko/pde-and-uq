@@ -10,10 +10,10 @@ import pickle
 
 nd = 1
 L = [2 * np.pi]
-nc = 9
+nc = 8
 
-with open('e_div_gamma.pickle') as f:
-    e_div_gamma = pickle.load(f)
+with open('e_ijk.pickle') as f:
+    e = pickle.load(f)
 
 
 class gPCBurgersEqn(TC_base):
@@ -53,8 +53,8 @@ class gPCBurgersEqn(TC_base):
                 for j in range(self.nc):
                     vj = c[('u', j)]
                     c[('f', k)][..., 0] = c[('f', k)][..., 0] + \
-                        0.5 * vi * vj * e_div_gamma[i, j, k]
-                    c[('df', k, i)][..., 0] = vj * e_div_gamma[i, j, k]
+                        0.5 * vi * vj * e[i, j, k]
+                    c[('df', k, i)][..., 0] = vj * e[i, j, k]
 
 
 coefficients = gPCBurgersEqn(nu=1e-6, nc=nc)

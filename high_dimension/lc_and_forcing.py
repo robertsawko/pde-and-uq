@@ -5,7 +5,7 @@ from scipy.interpolate import interp1d
 import burgers_kl_1d_p as physics
 import burgers_kl_1d_dgp2_lim_n as numerics
 
-Profiling.logLevel = 5
+Profiling.logLevel = 1
 Profiling.verbose = True
 
 # lcList = [6, 0.01]
