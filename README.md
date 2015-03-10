@@ -1,4 +1,4 @@
-# Burgers 1D example
+# Partial differential equation with stochastic inputs
 
 I am working on reproducing the results from
 [this](http://rspa.royalsocietypublishing.org/content/470/2171/20140080) paper
@@ -19,3 +19,9 @@ The repository is split onto several different directories
   * notebooks - iPython notebooks which serve as documentation
   * riemann - Riemann problem examples
 
+## Current issues
+
+  * The multi-dimensional case with forcing doesn't seem to work. I can only
+    see small effect of the forcing.
+  * I was unable to rerun the kinetic case in 3D. The third dimension would
+    correspond the the forcing.

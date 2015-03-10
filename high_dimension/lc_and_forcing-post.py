@@ -66,17 +66,18 @@ def make_solution_map_with_snapshots(archive, T=2, filename="map.pdf"):
                 Time = list(enumerate(a.iter("Time")))
                 M = len(Time)
 
-    # Number of nodes
-    N = 1000
+    label_base = "/{0:s}{1:d}"
+    x = read_from_hdf5(
+        archive.hdfFile, label_base.format("nodes_dgp2_Lagrange", 0))[:, 0]
+
+    N = len(x)
     temp = np.zeros((M * N, 1))
 
-    label_base = "/{0:s}{1:d}"
     for ind in range(M):
         temp[ind*N:(ind+1)*N, 0] = read_from_hdf5(
-            archive.hdfFile, label_base.format("u", ind))[0:-1:3]
+            archive.hdfFile, label_base.format("u", ind))
 
-    grid = temp.reshape((M, N))
-    grid = grid[::-1, :]
+    uu = temp.reshape((M, N))
 
     set_plt_params(relative_fig_width=1)
     fig = plt.figure()
@@ -90,10 +91,10 @@ def make_solution_map_with_snapshots(archive, T=2, filename="map.pdf"):
     ax1.set_xticks((0, 0.5, 1))
     ax1.set_xticklabels(("0", "$\pi$", "$2\pi$"))
     ax1.set_yticks((0, 0.5, 1))
-    ax1.set_yticklabels(("0", T/2, T))
+    ax1.set_yticklabels(("0", T/2.0, T))
     im = ax1.imshow(
-        grid, extent=(0, 1, 0, 1), interpolation='nearest', cmap=cm.coolwarm,
-        vmin=-1, vmax=2)
+        uu[::-1, :], extent=(0, 1, 0, 1), interpolation='nearest',
+        cmap=cm.coolwarm, vmin=-1, vmax=2)
 
     cbar = plt.colorbar(im, orientation='horizontal', cax=ax2)
     cbar.solids.set_edgecolor("face")
@@ -121,15 +122,18 @@ def make_solution_map_with_snapshots(archive, T=2, filename="map.pdf"):
     # Finishing touch - add arrows
     con = ConnectionPatch(
         xyA=(1, 0), xyB=(0, 0), coordsA="data", coordsB="data",
-        axesA=ax1, axesB=ax6, arrowstyle="->", shrinkB=5, shrinkA=5)
+        axesA=ax1, axesB=ax6, color="black", arrowstyle="->",
+        shrinkB=5, shrinkA=5)
     ax1.add_artist(con)
     con = ConnectionPatch(
         xyA=(1, 0.5), xyB=(0, 0), coordsA="data", coordsB="data",
-        axesA=ax1, axesB=ax5, arrowstyle="->", shrinkB=5, shrinkA=5)
+        axesA=ax1, axesB=ax5, color="black", arrowstyle="->",
+        shrinkB=5, shrinkA=5)
     ax1.add_artist(con)
     con = ConnectionPatch(
-        xyA=(1, 1.0), xyB=(0, 0), coordsA="data", coordsB="data",
-        axesA=ax1, axesB=ax4, arrowstyle="->", shrinkB=5, shrinkA=5)
+        xyA=(1, 1), xyB=(0, 0), coordsA="data", coordsB="data",
+        axesA=ax1, axesB=ax4, color="black", arrowstyle="->",
+        shrinkB=5, shrinkA=5)
     ax1.add_artist(con)
     fig.savefig(filename, bbox_inches='tight', transparent=True)
 
@@ -142,6 +146,6 @@ def post_process_case(case_name):
     del archive
 
 post_process_case("lc0.01_forcing")
-post_process_case("lc0.01_noforcing")
-post_process_case("lc6_forcing")
-post_process_case("lc6_noforcing")
+#post_process_case("lc0.01_noforcing")
+#post_process_case("lc6_forcing")
+#post_process_case("lc6_noforcing")

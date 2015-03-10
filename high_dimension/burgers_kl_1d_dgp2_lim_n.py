@@ -5,7 +5,7 @@ from proteus.Archiver import ArchiveFlags
 import numpy as np
 archiveFlag = ArchiveFlags.EVERY_USER_STEP
 
-tnList = np.linspace(0, T, 100)
+tnList = np.linspace(0, T, 1000)
 
 timeOrder = 3
 nStagesTime = timeOrder
