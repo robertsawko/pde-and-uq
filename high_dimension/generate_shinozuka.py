@@ -17,32 +17,34 @@ def shinozuka(x, b, Phi, delta_w=1 / 2 / pi):
         f0 += sqrt(4 * Sff * delta_w) * cos(omega * x + Phi[k])
     return f0
 
-L = 2 * pi
-N = 20000
-x = linspace(0, L, N)
 
-fig_corr = figure()
-fig_sig = figure()
-axs = fig_sig.gca()
-axc = fig_corr.gca()
-seed(123)
-b = 100
-maxM = 8192
-Phi = rand(maxM) * 2 * pi
+if __name__ == '__main__':
+    L = 2 * pi
+    N = 20000
+    x = linspace(0, L, N)
 
-for m in [maxM // 4, maxM // 2, maxM]:
-    y = shinozuka(x, b=b, delta_w=1 / L, Phi=Phi[0:m])
-    f, pxx = welch(y, fs=1 / (x[1] - x[0]), nperseg=N // 10)
+    fig_corr = figure()
+    fig_sig = figure()
+    axs = fig_sig.gca()
+    axc = fig_corr.gca()
+    seed(123)
+    b = 100
+    maxM = 8192
+    Phi = rand(maxM) * 2 * pi
 
-    axc.loglog(
-        2 * pi * f, pxx / 4 / pi,
-        label='Empirical m={0:n}'.format(m))
-    axs.plot(x, y, label='m={0:n}'.format(m))
+    for m in [maxM // 4, maxM // 2, maxM]:
+        y = shinozuka(x, b=b, delta_w=1 / L, Phi=Phi[0:m])
+        f, pxx = welch(y, fs=1 / (x[1] - x[0]), nperseg=N // 10)
 
-omega = logspace(-1, 4, 10000)
-a = ftransform_analytical(omega, b=b)
-axc.loglog(omega, a, label='Analytical')
-axs.legend()
-axc.legend()
-fig_sig.show()
-fig_corr.show()
+        axc.loglog(
+            2 * pi * f, pxx / 4 / pi,
+            label='Empirical m={0:n}'.format(m))
+        axs.plot(x, y, label='m={0:n}'.format(m))
+
+    omega = logspace(-1, 4, 10000)
+    a = ftransform_analytical(omega, b=b)
+    axc.loglog(omega, a, label='Analytical')
+    axs.legend()
+    axc.legend()
+    fig_sig.show()
+    fig_corr.show()
