@@ -13,8 +13,8 @@ Profiling.verbose = True
 lcList = [0.01]
 mList = [200]
 
-with open('u0.pickle') as f:
-    [x, y] = pickle.load(f)
+with open('u0.pickle', 'rb') as f:
+    x, y = pickle.load(f)
 
 pList = [physics]
 nList = [numerics]
@@ -24,7 +24,7 @@ opts.cacheArchive = True
 so.archiveFlag = Archiver.ArchiveFlags.EVERY_USER_STEP
 
 print "Interpolating...",
-u0 = interp1d(x + x[-1], y, kind='nearest')
+u0 = interp1d(x, y, kind='nearest')
 print "done."
 
 for ind, lc in enumerate(lcList):
@@ -32,15 +32,15 @@ for ind, lc in enumerate(lcList):
     pList[0].initialConditions \
         = {0: pList[0].KarhunenLoeveIC(u0)}
     pList[0].coefficients = pList[0].ForcedBurgersEqn(
-            nu=1e-6,
-            sigma=0.0,
-            rofx=lambda x, t: 0)
+        nu=1e-9,
+        sigma=0.0,
+        rofx=lambda x, t: 0)
     so.name = pList[0].name = "lc{0}_noforcing".format(lc)
     ns = NumericalSolution.NS_base(so, pList, nList, so.sList, opts)
     ns.calculateSolution(so.name)
     del ns
     pList[0].coefficients = pList[0].ForcedBurgersEqn(
-        nu=1e-6,
+        nu=1e-9,
         sigma=0.05,
         # rofx=lambda x, t: pList[0].forcing_term(x, t, xi=xi)
         rofx=lambda x, t: pList[0].forcing_term(x, t)

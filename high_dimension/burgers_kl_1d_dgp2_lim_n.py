@@ -17,13 +17,13 @@ limiterType = TimeIntegration.DGlimiterP2Lagrange1d  # None
 
 timeIntegration = SSPRKPIintegration
 stepController = Min_dt_RKcontroller
-nDTout = 10
+nDTout = 100
 
 femSpaces = {0: DG_AffineQuadraticOnSimplexWithNodalBasis}
 
 
 elementQuadrature = SimplexGaussQuadrature(nd, 4)
-elementBoundaryQuadrature = SimplexGaussQuadrature(nd-1, 4)
+elementBoundaryQuadrature = SimplexGaussQuadrature(nd - 1, 4)
 
 nn = 10001
 nLevels = 1
@@ -43,7 +43,7 @@ nonlinearSmoother = NLGaussSeidel
 
 fullNewtonFlag = True
 
-tolFac = 0.01
+tolFac = 0.0001
 
 nl_atol_res = 1.0e-8
 
@@ -55,7 +55,7 @@ levelLinearSolver = LU
 
 linearSmoother = GaussSeidel
 
-linTolFac = 0.001
+linTolFac = 0.00001
 
 conservativeFlux = None
 

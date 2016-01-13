@@ -1,14 +1,15 @@
 from proteus import *
 from proteus.default_p import *
 from proteus.TransportCoefficients import TC_base
-import numpy as np
+from numpy import sin, cos, arange, array, pi
+from numpy.random import randn, seed
 
 """
 1D, burgers equation with Karhunen-Loeve initial condition
 """
 
 nd = 1
-L = [2 * np.pi]
+L = [2 * pi]
 
 #with open('u0.pickle') as f:
     #[x, y] = pickle.load(f)
@@ -44,7 +45,7 @@ class ForcedBurgersEqn(TC_base):
 def forcing_term(x, t):
     m = 5  # xi.shape[0]
     f = 1
-    xi = np.array(
+    xi = array(
         [
             [-1.03279051,  1.12144128],
             [0.63810904,  0.33041598],
@@ -53,14 +54,15 @@ def forcing_term(x, t):
             [-0.45502265,  0.75728598]
         ])
 
-    for k in np.arange(1, m + 1):
-        f = f + (-1)**k * \
-            (xi[k - 1, 0] * np.sin(2 * k * x[..., 0]) \
-            + xi[k - 1, 1] * np.cos(3 * k * x[..., 0])) \
-            * exp(-np.sin(2*k*t))
+    for k in arange(1, m + 1):
+        f = f + (-1)**k * (
+                xi[k - 1, 0] * sin(2 * k * x[..., 0]) +
+                xi[k - 1, 1] * cos(3 * k * x[..., 0])
+            ) * exp(-sin(2 * k * t))
+
     return f
 
-xi = np.random.randn(5, 2)
+xi = randn(5, 2)
 coefficients = ForcedBurgersEqn(
     nu=1e-6, rofx=lambda x, t: forcing_term(x, t))
 
@@ -76,14 +78,14 @@ diffusiveFluxBoundaryconditions = {0: {0: emptyBC}}
 def getPBC(x, flag):
     eps = 1.0e-8
     if x[0] < eps or x[0] >= L[0] - eps:
-        return np.array([0.0, 0.0, 0.0])
+        return array([0.0, 0.0, 0.0])
 
 periodicDirichletConditions = {0: getPBC}
 
 
 class KarhunenLoeveIC:
     def __init__(self, u0):
-        self.u0 = u0 
+        self.u0 = u0
 
     def uOfXT(self, x, t):
         return self.u0(x[0])
