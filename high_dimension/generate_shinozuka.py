@@ -9,6 +9,22 @@ def ftransform_analytical(omega, b):
 
 
 def shinozuka(x, b, Phi, delta_w=1 / 2 / pi):
+    '''
+    Shinozuka process-generation method
+
+    :param x: spatial position
+    :param b: coefficient in the correlation exponent
+    :param Phi: random phases
+    :param delta_w: frequency increment and smallest resolved frequency
+
+    Based on
+
+        Shinozuka, M. and Deodatis, G. "Simulation of stochastic process by
+        spectral representation", 1991 Applied Mechanics Reviews, pp 191-204
+
+    Note: If the smallest frequency is larger than the domain length the
+    periodicity may be visible.
+    '''
     M = len(Phi)
     f0 = zeros_like(x)
     for k in range(M):
@@ -34,6 +50,7 @@ if __name__ == '__main__':
 
     for m in [maxM // 4, maxM // 2, maxM]:
         y = shinozuka(x, b=b, delta_w=1 / L, Phi=Phi[0:m])
+        # larger nperseg makes smaller frequencies visible
         f, pxx = welch(y, fs=1 / (x[1] - x[0]), nperseg=N // 10)
 
         axc.loglog(
