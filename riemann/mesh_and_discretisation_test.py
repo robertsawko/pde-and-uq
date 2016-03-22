@@ -1,7 +1,6 @@
 from proteus.iproteus import *
 import numpy as np
-Profiling.logLevel = 2
-Profiling.verbose = True
+Profiling.verbose=1
 
 mesh_sizes = np.array([10, 50, 100, 200])
 
@@ -12,6 +11,7 @@ nList = [numerics]
 so = default_so
 so.sList = [default_s]
 # opts.cacheArchive = True
+opts.logLevel = 4
 so.archiveFlag = Archiver.ArchiveFlags.EVERY_SEQUENCE_STEP
 nList[0].runCFL = 0.1
 
@@ -34,6 +34,7 @@ nList[0].numericalFluxType = NumericalFlux.RusanovNumericalFlux_Diagonal
 for mesh_size in mesh_sizes:
     so.name = pList[0].name = 'burgers_dgp2_{0:03d}'.format(mesh_size)
     nList[0].nn = mesh_size
+    nList[0].DT = 2.0 / mesh_size
     ns = NumericalSolution.NS_base(so, pList, nList, so.sList, opts)
     ns.calculateSolution(so.name)
     del ns
