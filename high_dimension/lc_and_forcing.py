@@ -2,10 +2,9 @@ from proteus.iproteus import *
 import numpy as np
 import pickle
 from scipy.interpolate import interp1d
-import burgers_kl_1d_p as physics
-import burgers_kl_1d_dgp2_lim_n as numerics
+import burgers.physics as ph
+import burgers.numerics as nu
 
-Profiling.logLevel = 1
 Profiling.verbose = True
 
 # lcList = [6, 0.01]
@@ -16,11 +15,12 @@ mList = [200]
 with open('u0.pickle', 'rb') as f:
     x, y = pickle.load(f)
 
-pList = [physics]
-nList = [numerics]
+pList = [ph]
+nList = [nu]
 so = default_so
 so.sList = [default_s]
-opts.cacheArchive = True
+# opts.cacheArchive = True
+opts.logLevel = 1
 so.archiveFlag = Archiver.ArchiveFlags.EVERY_USER_STEP
 
 print "Interpolating...",
