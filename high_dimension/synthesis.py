@@ -1,5 +1,6 @@
 """
-Functions necessary to perform Karhunen-Loeve expansion of
+Functions necessary to synthesise a Gaussian stochastic process with the
+following correlation:
 
 .. math:: C(x, y) = \exp(-c|x-y|)
 
@@ -8,7 +9,7 @@ on interval :math: `(-a, a)`. Based on the solution given in
 Ghanem, R. and Spanos, P. "Stochastic Finite Elements: A Spectral Approach",
 1991 Springer, pp 29-33
 """
-from numpy import sin, cos, tan, pi, sqrt, ones, outer, zeros
+from numpy import sin, cos, tan, pi, sqrt, ones, outer, zeros, zeros_like
 from numpy.random import randn
 from scipy.optimize import brentq
 
@@ -171,3 +172,37 @@ def kl_expansion_fourier_projected(
                 norm = a - sin(2 * a * k) / (2 * k)
                 w = w + kl_term * sin(k * x - phase) / norm
     return w
+
+
+def ftransform_analytical(omega, b):
+    '''
+    This is using the following definition:
+    F{f}(omega) = 1 / (2 \pi) \int f(t) exp(-i omega t) dt
+    '''
+    return 1 / pi * b / (b**2 + omega**2)
+
+def shinozuka(x, b, Phi, delta_w=1 / 2 / pi):
+    '''
+    Shinozuka process-generation method
+
+    :param x: spatial position
+    :param b: coefficient in the correlation exponent
+    :param Phi: random phases
+    :param delta_w: frequency increment and smallest resolved frequency
+
+    Based on
+
+        Shinozuka, M. and Deodatis, G. "Simulation of stochastic process by
+        spectral representation", 1991 Applied Mechanics Reviews, pp 191-204
+
+    Note: If the smallest frequency is larger than the domain length the
+    periodicity may be visible.
+    '''
+    M = len(Phi)
+    f0 = zeros_like(x)
+    for k in range(M):
+        omega = (k + 1) * delta_w
+        Sff = 1 / pi * b / (b**2 + omega**2)
+        f0 += sqrt(4 * Sff * delta_w) * cos(omega * x + Phi[k])
+    return f0
+

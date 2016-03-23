@@ -1,6 +1,6 @@
 from proteus import *
 from proteus.default_n import *
-from burgers_kl_1d_p import *
+from physics import *
 from proteus.Archiver import ArchiveFlags
 import numpy as np
 archiveFlag = ArchiveFlags.EVERY_USER_STEP
