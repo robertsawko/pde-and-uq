@@ -1,7 +1,7 @@
-from numpy import linspace, pi
+from numpy import linspace, pi, sin, var
 from synthesis import shinozuka
 import pickle
-from numpy.random import seed, rand
+from numpy.random import seed, rand, randn
 
 
 if __name__ == '__main__':
@@ -15,8 +15,9 @@ if __name__ == '__main__':
     # Phi = rand(maxM) * 2 * pi
     target_energy = 0.5
 
+    eta0 = randn(1)
     Phi = rand(M) * 2 * pi
-    y = shinozuka(x, b=b, delta_w=1 / L, Phi=Phi[0:M])
-
+    noise = shinozuka(x, b=b, delta_w=1 / L, Phi=Phi[0:M])
+    y = 0.5 * (1.0 + eta0 + sin(x)) + noise
     with open('u0.pickle', 'wb') as f:
         pickle.dump([x, y], f)

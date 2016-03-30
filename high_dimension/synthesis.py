@@ -181,6 +181,7 @@ def ftransform_analytical(omega, b):
     '''
     return 1 / pi * b / (b**2 + omega**2)
 
+
 def shinozuka(x, b, Phi, delta_w=1 / 2 / pi):
     '''
     Shinozuka process-generation method
@@ -205,4 +206,3 @@ def shinozuka(x, b, Phi, delta_w=1 / 2 / pi):
         Sff = 1 / pi * b / (b**2 + omega**2)
         f0 += sqrt(4 * Sff * delta_w) * cos(omega * x + Phi[k])
     return f0
-
