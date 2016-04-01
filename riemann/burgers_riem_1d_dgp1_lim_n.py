@@ -31,7 +31,7 @@ multilevelNonlinearSolver = NLNI
 
 levelNonlinearSolver = pr.NonlinearSolvers.SSPRKNewton  # Newton
 
-nonlinearSmoother = NLGaussSeidel
+nonlinearSmoother = None
 
 fullNewtonFlag = True
 
@@ -41,17 +41,18 @@ nl_atol_res = 1.0e-8
 
 matrix = pr.LinearAlgebraTools.SparseMatrix
 
-multilevelLinearSolver = LU
+multilevelLinearSolver = KSP_petsc4py
 
-levelLinearSolver = LU
+levelLinearSolver = KSP_petsc4py
 
-linearSmoother = GaussSeidel
+linearSmoother = None
 
 linTolFac = 0.001
 
 conservativeFlux = None
 
 periodicDirichletConditions = {0: getPBC}
-parallelPeriodic = False
+# parallel settings
+parallelPeriodic = True
 parallelPartitioningType = MeshParallelPartitioningTypes.element
 nLayersOfOverlapForParallel = 0
